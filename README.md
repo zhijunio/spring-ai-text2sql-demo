@@ -1,51 +1,58 @@
-# Spring AI Text2SQL Showcase
+# Spring AI Text2SQL Demo
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/zhijunio/spring-ai-text2sql-showcase/build.yml?branch=main)](https://github.com/zhijunio/spring-ai-text2sql-showcase/actions/workflows/build.yml)
-[![License](https://img.shields.io/github/license/zhijunio/spring-ai-text2sql-showcase)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/zhijunio/spring-ai-text2sql-showcase)](https://github.com/zhijunio/spring-ai-text2sql-showcase/stargazers)
+[![Java](https://img.shields.io/badge/Java-25-blue?logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.2-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring AI](https://img.shields.io/badge/Spring%20AI-2.0.2-6DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-ai)
+[![Maven](https://img.shields.io/badge/Maven-3.10.0-C71A36?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![GitHub stars](https://img.shields.io/github/stars/zhijunio/spring-ai-text2sql-demo)](https://github.com/zhijunio/spring-ai-text2sql-demo/stargazers)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
-一个使用 Spring AI 实现自然语言转 SQL 查询的演示项目，详细说明请参考[《Spring AI 让数据库听懂人话：Text2SQL 自然语言查询实践指南》](https://blog.chensoul.cc/posts/spring-ai-text2sql-showcase/)。用户可以通过自然语言描述查询需求，AI 会自动生成对应的 SQL 语句并执行查询。
+[简体中文](README.zh-CN.md) | English
 
-## 功能特性
+A web demo that turns natural-language questions into SQL with Spring AI and DeepSeek. It includes a direct query flow and an MCP tool-assisted flow, with a PostgreSQL sample database and a Thymeleaf interface.
 
-- 🤖 **智能 SQL 生成**：使用 Spring AI 和 DeepSeek Chat API 将自然语言转换为 SQL 查询
-- 🛡️ **安全防护**：内置 SQL 注入防护，只允许 SELECT 查询
-- 🎨 **美观界面**：现代化的 Web 界面，支持实时查询和结果展示
-- 📊 **数据可视化**：查询结果以表格形式展示，支持分页和滚动
-- 🔍 **数据库结构**：自动获取并展示数据库结构信息
-- 📝 **示例查询**：提供常用查询示例，帮助用户快速上手
-- 🛠️ **工具集成**：支持 MCP 工具查询数据库结构，提高查询准确性
+## Features
 
-## Prerequisites
+- Ask questions about the sample database in natural language
+- Generate and execute read-only `SELECT` queries
+- Inspect the database schema and view query results
+- Try direct, step-based, and MCP tool-assisted query flows
 
-- JDK 25+
-- Docker and Docker Compose
+## Requirements
 
-## Technology Stack
+- JDK 25
+- [mise](https://mise.jdx.dev/) to install the pinned Java and Maven versions
+- Docker Compose
+- A DeepSeek API key
 
-- Java
-- Spring Boot
-- Spring AI
-- PostgreSQL 18
-- Maven
-- Bootstrap 5
-- Thymeleaf
+## Run locally
 
-## How to run?
+Install the project toolchain, then start PostgreSQL and load the sample schema and data:
 
 ```bash
-# Full build with tests (integration tests use Testcontainers + PostgreSQL)
-$ ./mvnw clean verify
-
-# Run application(using Docker Compose)
-$ ./mvnw spring-boot:run
-
-# Run application(using Testcontainers)
-$ ./mvnw spring-boot:test-run
-
-# Code formatting
-$ ./mvnw spotless:apply
-
-# Docker image build
-$ ./mvnw spring-boot:build-image -DskipTests
+mise install
+docker compose up -d
 ```
+
+Set the API key and start the app:
+
+```bash
+export DEEPSEEK_API_KEY=your-api-key
+./mvnw spring-boot:run
+```
+
+Open <http://localhost:8080/>. The step-based interface is available at <http://localhost:8080/step>.
+
+## HTTP API
+
+- `GET /api/schema` — return the database schema
+- `POST /api/query` — submit a natural-language query as JSON, for example `{"query":"How many customers are there?"}`
+- `POST /api/steps/query` — submit a query through the step-based flow
+
+## Article
+
+See [Spring AI Text2SQL in practice](https://blog.zhijun.io/posts/spring-ai-text2sql-showcase/) for the walkthrough.
+
+## License
+
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for the full terms.

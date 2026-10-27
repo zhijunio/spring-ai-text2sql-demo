@@ -1,0 +1,21 @@
+[tools]
+java = "temurin-25.0.5+8.0.LTS"
+maven = "3.10.0"
+
+[tasks]
+default = "mise run test"
+
+[tasks.format]
+run = "./mvnw spotless:apply"
+
+[tasks.test]
+depends = ["format"]
+run = "./mvnw clean verify"
+
+[tasks.build]
+depends = ["test"]
+run = ["./mvnw clean install -DskipTests", "./mvnw spring-boot:build-image -DskipTests"]
+
+[tasks.sleep]
+usage = 'arg "[duration]" default="5"'
+run = "sleep ${usage_duration?}"

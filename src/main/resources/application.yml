@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring-ai-text2sql-showcase
+    name: spring-ai-text2sql-demo
   
   # 数据库配置
   datasource:
